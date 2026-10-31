@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صيّاد اللؤلؤ</title>
+<meta name="author" content="صفاء السيد مصطفى">
+<meta name="description" content="صيّاد اللؤلؤ: لعبة تعليمية للقسمة لطلاب الصف الخامس الابتدائي بأجواء الغوص على اللؤلؤ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b3d5c; --card:#fffdf7; --ink:#12304a; --muted:#5f7a8c;
+  --pri:#0e7c86; --pri2:#22a8b0; --ok:#1fa672; --bad:#e2574c; --sun:#d9a441;
+  --line:#e7dfcc; --shadow:0 6px 0 rgba(4,30,48,.35); --sand:#f3e3bf;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+html{background:#08324f}
+body{font-family:'Tajawal',system-ui,sans-serif;color:var(--ink);min-height:100%;
+  background:linear-gradient(180deg,#7fd3e6 0%,#2a93b8 22%,#0f5f86 55%,#08324f 100%) fixed}
+.sea{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sea:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,rgba(255,255,255,.07) 0 40px,transparent 40px 140px);animation:rays 9s ease-in-out infinite alternate}
+@keyframes rays{to{transform:translateX(-60px)}}
+.sea .b{position:absolute;bottom:-30px;border-radius:50%;border:2px solid rgba(255,255,255,.55);background:rgba(255,255,255,.12);animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-115vh) translateX(20px)}}
+.sea .floor{position:absolute;bottom:0;left:0;right:0;height:70px;background:radial-gradient(ellipse at 20% 100%,#c9a96b 0 60%,transparent 61%),radial-gradient(ellipse at 75% 100%,#b8955a 0 55%,transparent 56%);opacity:.55}
+.wrap{position:relative;z-index:1}
+.wrap{max-width:620px;margin:0 auto;padding:18px 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.logo .badge{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,#f3eadb 40%,#cbbfa8 100%);color:#fff;display:grid;place-items:center;font-size:26px;box-shadow:var(--shadow)}
+.tool{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:6px 10px;font:inherit;font-weight:700;color:var(--ink);cursor:pointer}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+h1{font-size:30px;font-weight:900;line-height:1.3}
+h2{font-size:20px;font-weight:800;margin-bottom:10px}
+p.sub{color:var(--muted);margin:6px 0 18px;font-size:17px}
+.levels{display:grid;gap:12px}
+.lvl{position:relative;display:flex;align-items:center;gap:14px;text-align:right;width:100%;border:2px solid var(--line);background:#fff;border-radius:18px;padding:14px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s,border-color .12s}
+.lvl:hover{transform:translateY(-2px);border-color:var(--pri2)}
+.lvl:active{transform:translateY(1px)}
+.lvl .ic{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:24px;font-weight:900;color:#fff}
+.lvl b{display:block;font-size:19px}
+.lvl small{color:var(--muted);font-size:15px}
+.lvl .stars{margin-inline-start:auto;font-size:18px;letter-spacing:2px;white-space:nowrap}
+.lvl .depth{position:absolute;top:8px;left:12px;font-size:12px;color:var(--muted);font-weight:700}
+.pl{display:inline-block;width:.9em;height:.9em;border-radius:50%;vertical-align:-.1em;margin:0 .08em;background:radial-gradient(circle at 35% 30%,#fff 0 18%,#f4ecdf 45%,#cdbf9f 100%);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.pl.off{background:none;border:2px dashed #b9c6cf;box-shadow:none}
+.hud{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:700;font-size:15px}
+.bar{height:12px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f6efe1,#fff);border-radius:99px;transition:width .35s}
+.q{text-align:center}
+.story{font-size:19px;line-height:1.7;margin-bottom:12px;font-weight:500}
+.expr{font-size:46px;font-weight:900;letter-spacing:1px;margin:6px 0 4px;direction:ltr;unicode-bidi:isolate}
+body.ea .expr,body.ea .steps .num{direction:rtl}
+.ask{color:var(--muted);font-size:16px;margin-bottom:16px}
+.inputs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.field{display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:700;font-size:15px}
+.field input{width:130px;font:inherit;font-size:30px;font-weight:900;text-align:center;border:3px solid var(--line);border-radius:16px;padding:8px;outline:none;color:var(--ink);background:#fffdf8}
+.field input:focus{border-color:var(--pri)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ch{font:inherit;font-size:26px;font-weight:900;padding:14px;border-radius:16px;border:3px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.ch:hover{border-color:var(--pri2)}
+.ch.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.ch.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn{font:inherit;font-weight:800;font-size:19px;border:none;border-radius:16px;padding:13px 22px;cursor:pointer;color:#fff;background:var(--pri);box-shadow:0 5px 0 #075a62;transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #075a62}
+.btn.ghost{background:#fff;color:var(--pri);border:2px solid var(--pri);box-shadow:0 5px 0 #bfe6e8}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.fb{margin-top:14px;border-radius:16px;padding:12px 14px;font-weight:700;font-size:17px;display:none;text-align:right}
+.fb.ok{display:block;background:#e3f8ef;color:#0e7a50}
+.fb.bad{display:block;background:#fde8e8;color:#b13434}
+.steps{margin-top:12px;background:#eaf6f6;border-radius:16px;padding:12px 14px;text-align:right;display:none;font-size:16px;line-height:1.8}
+.steps.show{display:block}
+.steps ol{padding-inline-start:20px}
+.steps .num{direction:ltr;unicode-bidi:isolate;font-weight:800}
+.big{font-size:64px;text-align:center;margin:4px 0}
+.result-stars{font-size:46px;text-align:center;letter-spacing:6px;margin:6px 0}
+.score{text-align:center;font-size:22px;font-weight:800;margin-bottom:6px}
+.msg{text-align:center;color:var(--muted);margin-bottom:18px;font-size:17px}
+.hidden{display:none!important}
+.shake{animation:sh .35s}
+@keyframes sh{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.pop{animation:pp .35s}
+@keyframes pp{50%{transform:scale(1.06)}}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.confetti i.pearl{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,#f1e7d6 50%,#c7b99d 100%)!important}
+.tip{margin-top:16px;font-size:15px;color:var(--muted);text-align:center}
+.credit{text-align:center;color:#e6f4f8;font-size:15px;margin-top:22px;text-shadow:0 1px 0 rgba(0,0,0,.3)}
+.credit b{color:#fff;font-weight:800}
+.boat{font-size:13px;color:var(--muted);text-align:center;margin-top:6px}
+@media (max-width:420px){h1{font-size:25px}.expr{font-size:38px}.field input{width:110px;font-size:26px}}
+</style>
+</head>
+<body>
+<div class="sea" id="sea"><div class="floor"></div></div>
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="badge"></span>صيّاد اللؤلؤ</div>
+    <div class="row">
+      <button class="tool" id="digitsBtn" title="تبديل شكل الأرقام">١٢٣</button>
+      <button class="tool" id="soundBtn" title="الصوت">🔊</button>
+    </div>
+  </header>
+
+  <!-- Home -->
+  <section id="home" class="card">
+    <h1>يا هلا بالغوّاص الصغير! 🌊</h1>
+    <p class="sub">النوخذة ينتظرك على ظهر السفينة. اختر الهير (المغاص) وانزل للبحر، وكل إجابة صحيحة من أول محاولة تفتح محارة فيها لؤلؤة. اجمع ٣ لآلئ في كل هير لتصبح أمهر صيّاد لؤلؤ!</p>
+    <div class="levels" id="levels"></div>
+    <p class="tip">🪢 إذا احترت، اسحب «حبل السيب» ليعطيك خطوات القسمة الطويلة.</p>
+  </section>
+
+  <!-- Game -->
+  <section id="game" class="hidden">
+    <div class="hud">
+      <span class="pill" id="hLevel"></span>
+      <span class="pill">السؤال <span id="hNum"></span></span>
+      <span class="pill"><i class="pl"></i> لآلئ <span id="hScore">0</span></span>
+      <span class="pill">🫧 <span id="hStreak">0</span></span>
+    </div>
+    <div class="bar"><i id="prog"></i></div>
+    <div class="card q" id="qCard">
+      <div class="story" id="story"></div>
+      <div class="expr" id="expr"></div>
+      <div class="ask" id="ask"></div>
+      <div class="choices hidden" id="choices"></div>
+      <form id="form" autocomplete="off">
+        <div class="inputs">
+          <label class="field">ناتج القسمة<input id="inQ" inputmode="numeric"></label>
+          <label class="field" id="remField">الباقي<input id="inR" inputmode="numeric" placeholder="٠"></label>
+        </div>
+        <div class="row">
+          <button class="btn" type="submit" id="checkBtn">تحقّق ✓</button>
+          <button class="btn ghost" type="button" id="helpBtn">حبل السيب 🪢</button>
+        </div>
+      </form>
+      <div class="row hidden" id="mcRow"><button class="btn ghost" type="button" id="helpBtn2">حبل السيب 🪢</button></div>
+      <div class="fb" id="fb"></div>
+      <div class="steps" id="steps"></div>
+      <div class="row hidden" id="nextRow" style="margin-top:14px"><button class="btn" id="nextBtn">التالي ←</button></div>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="tool" id="quitBtn">⛵ ارجع للسفينة</button></div>
+  </section>
+
+  <!-- Result -->
+  <section id="result" class="card hidden">
+    <div class="big" id="rEmoji">🦪</div>
+    <div class="result-stars" id="rStars"></div>
+    <div class="score" id="rScore"></div>
+    <div class="msg" id="rMsg"></div>
+    <div class="row">
+      <button class="btn" id="againBtn">غُص مرة ثانية</button>
+      <button class="btn ghost" id="homeBtn">الهيرات</button>
+    </div>
+  </section>
+  <footer class="credit">🦪 من عمل: <b>صفاء السيد مصطفى</b></footer>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+let eastern=store.get('eastern',true), sound=store.get('sound',true);
+const AR='٠١٢٣٤٥٦٧٨٩';
+const fmt=n=>{const s=String(n);return eastern?s.replace(/\d/g,d=>AR[d]):s};
+const parseNum=s=>{s=(s||'').trim().replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));return /^\d+$/.test(s)?parseInt(s,10):(s===''?null:NaN)};
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[rnd(0,a.length-1)];
+
+const LEVELS=[
+ {id:'facts',name:'الهير القريب: حقائق القسمة',desc:'جداول الضرب بالعكس',icon:'١',color:'#5cc3d6',mode:'mc',depth:'عمق ٣ أبواع'},
+ {id:'one',name:'هير الشط: قسمة على رقم',desc:'عدد من ٣ أرقام ÷ رقم، بدون باقٍ',icon:'٢',color:'#2a93b8',mode:'in',depth:'عمق ٥ أبواع'},
+ {id:'rem',name:'هير المحار: مع الباقي',desc:'عدد من ٣–٤ أرقام ÷ رقم',icon:'٣',color:'#1a6f9a',mode:'in',rem:true,depth:'عمق ٨ أبواع'},
+ {id:'two',name:'الهير العميق: على عدد من رقمين',desc:'مثل ٤٣٢ ÷ ١٢',icon:'٤',color:'#124d78',mode:'in',rem:true,depth:'عمق ١٢ باعاً'},
+ {id:'word',name:'هير الدانة: مسائل الغوص',desc:'مسائل من رحلة الغوص على اللؤلؤ',icon:'٥',color:'#0a2f4f',mode:'in',rem:true,depth:'عمق ١٥ باعاً'}
+];
+
+const WORD=[
+ (a,b)=>`جمع الغوّاصون ${fmt(a)} محارة، ووزّعها النوخذة على ${fmt(b)} سلال (ديين) بالتساوي. كم محارة في كل سلة؟ وكم يتبقى؟`,
+ (a,b)=>`وجد البحّارة ${fmt(a)} لؤلؤة، وكل كيس صغير يتسع لـ ${fmt(b)} لآلئ. كم كيساً نملأ؟ وكم لؤلؤة تبقى؟`,
+ (a,b)=>`باع النوخذة اللؤلؤ للطوّاش بـ ${fmt(a)} ديناراً، وقسّم المبلغ على ${fmt(b)} غوّاصين بالتساوي. كم ديناراً لكل غوّاص؟ وكم يتبقى؟`,
+ (a,b)=>`في السفينة ${fmt(a)} تمرة، وفيها ${fmt(b)} بحّارة. إذا أخذ كل بحّار العدد نفسه، كم تمرة لكل بحّار؟ وكم تمرة تبقى؟`,
+ (a,b)=>`نزل الغوّاص إلى البحر ${fmt(a)} مرة خلال ${fmt(b)} أيام بالتساوي. كم مرة غاص في اليوم؟ وكم يتبقى؟`,
+ (a,b)=>`يريد النهّام أن يقسّم ${fmt(a)} بيتاً من الشعر على ${fmt(b)} أغانٍ بالتساوي. كم بيتاً في كل أغنية؟ وكم يتبقى؟`,
+ (a,b)=>`حمل السيب ${fmt(a)} لتراً من الماء العذب، ونصبّها في ${fmt(b)} جِرار بالتساوي. كم لتراً في كل جرة؟ وكم يتبقى؟`
+];
+
+function makeQ(lv){
+  let a,b,story='';
+  if(lv.id==='facts'){b=rnd(2,10);const q=rnd(2,12);a=b*q}
+  else if(lv.id==='one'){b=rnd(2,9);const q=rnd(Math.ceil(100/b),Math.floor(999/b));a=b*q}
+  else if(lv.id==='rem'){b=rnd(3,9);a=rnd(100,Math.random()<.4?4999:999);if(a%b===0)a+=rnd(1,b-1)}
+  else if(lv.id==='two'){b=rnd(11,35);const q=rnd(6,40);a=b*q+(Math.random()<.6?rnd(1,b-1):0)}
+  else {b=rnd(3,12);a=rnd(40,450);story=pick(WORD)(a,b)}
+  return {a,b,q:Math.floor(a/b),r:a%b,story};
+}
+
+function longSteps(a,b){
+  const ds=String(a).split('').map(Number);let cur=0,out=[],started=false,qs='';
+  for(let i=0;i<ds.length;i++){
+    cur=cur*10+ds[i];
+    if(!started&&cur<b&&i<ds.length-1){out.push(`<span class="num">${fmt(cur)}</span> أصغر من <span class="num">${fmt(b)}</span>، ننزل الرقم التالي.`);continue}
+    started=true;const d=Math.floor(cur/b),m=d*b,left=cur-m;qs+=d;
+    out.push(`كم مرة يدخل <span class="num">${fmt(b)}</span> في <span class="num">${fmt(cur)}</span>؟ <b>${fmt(d)}</b> مرة، لأن <span class="num">${fmt(d)} × ${fmt(b)} = ${fmt(m)}</span>، ويتبقى <span class="num">${fmt(left)}</span>.`);
+    cur=left;
+  }
+  out.push(`إذن الناتج <b>${fmt(Math.floor(a/b))}</b> والباقي <b>${fmt(a%b)}</b>.`);
+  out.push(`للتأكد: <span class="num">${fmt(Math.floor(a/b))} × ${fmt(b)} + ${fmt(a%b)} = ${fmt(a)}</span> ✔`);
+  return '<b>🪢 السيب يسحبك خطوة خطوة:</b><ol>'+out.map(s=>'<li>'+s+'</li>').join('')+'</ol>';
+}
+
+// sound
+let ctx=null;
+function beep(ok){
+  if(!sound)return;
+  try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+    const notes=ok?[523,659,784]:[220,180];
+    notes.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=ok?'triangle':'sawtooth';o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,ctx.currentTime+i*.1);g.gain.exponentialRampToValueAtTime(.15,ctx.currentTime+i*.1+.02);
+      g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.1+.18);o.connect(g).connect(ctx.destination);o.start(ctx.currentTime+i*.1);o.stop(ctx.currentTime+i*.1+.2)});
+  }catch(e){}
+}
+function confetti(){
+  const c=$('confetti'),cols=['#6c4cf5','#ffb829','#1fb47a','#ef5a5a','#2f9bf0','#e0477f'];
+  for(let i=0;i<70;i++){const p=document.createElement('i');if(Math.random()<.6)p.className='pearl';p.style.left=Math.random()*100+'vw';p.style.background=pick(cols);
+    p.style.animationDuration=(1.6+Math.random()*1.6)+'s';p.style.animationDelay=Math.random()*.4+'s';c.appendChild(p)}
+  setTimeout(()=>c.innerHTML='',3600);
+}
+
+// state
+const TOTAL=10;let lv,qi,score,streak,cur,tries,usedHelp,answered;
+const best=store.get('best',{});
+
+function show(id){['home','game','result'].forEach(s=>$(s).classList.toggle('hidden',s!==id));window.scrollTo(0,0)}
+function starsFor(s){return s>=9?3:s>=7?2:s>=5?1:0}
+function starStr(n){let h='<span class="pearls">';for(let i=0;i<3;i++)h+=`<i class="pl ${i<n?'':'off'}"></i>`;return h+'</span>'}
+
+function renderHome(){
+  $('levels').innerHTML='';
+  LEVELS.forEach(l=>{
+    const b=document.createElement('button');b.className='lvl';
+    b.innerHTML=`<span class="ic" style="background:${l.color}">${eastern?l.icon:AR.indexOf(l.icon)}</span><span><b>${l.name}</b><small>${l.desc.replace(/\d/g,d=>eastern?AR[d]:d).replace(/[٠-٩]/g,d=>eastern?d:AR.indexOf(d))}</small></span><span class="stars">${starStr(best[l.id]||0)}</span><span class="depth">${eastern?l.depth:l.depth.replace(/[٠-٩]/g,d=>AR.indexOf(d))}</span>`;
+    b.onclick=()=>start(l);$('levels').appendChild(b);
+  });
+  $('digitsBtn').textContent=eastern?'١٢٣':'123';document.body.classList.toggle('ea',eastern);
+  $('soundBtn').textContent=sound?'🔊':'🔇';
+}
+
+function start(l){lv=l;qi=0;score=0;streak=0;$('hLevel').textContent=l.name;show('game');next()}
+
+function next(){
+  if(qi>=TOTAL)return finish();
+  qi++;cur=makeQ(lv);tries=0;usedHelp=false;answered=false;
+  $('hNum').textContent=fmt(qi)+' / '+fmt(TOTAL);$('hScore').textContent=fmt(score);$('hStreak').textContent=fmt(streak);
+  $('prog').style.width=((qi-1)/TOTAL*100)+'%';
+  $('story').textContent='';$('story').innerHTML=cur.story;
+  $('expr').textContent=fmt(cur.a)+' ÷ '+fmt(cur.b)+(eastern?' = ؟':' = ?');
+  $('fb').className='fb';$('steps').className='steps';$('steps').innerHTML='';$('nextRow').classList.add('hidden');
+  const mc=lv.mode==='mc';
+  $('choices').classList.toggle('hidden',!mc);$('mcRow').classList.toggle('hidden',!mc);$('form').classList.toggle('hidden',mc);
+  $('remField').classList.toggle('hidden',!lv.rem);
+  $('ask').textContent=mc?'اختر الإجابة الصحيحة':(lv.rem?'اكتب ناتج القسمة والباقي (اكتب ٠ إذا لم يوجد باقٍ)':'اكتب ناتج القسمة');
+  if(mc){
+    const set=new Set([cur.q]);while(set.size<4){const v=cur.q+pick([-3,-2,-1,1,2,3,cur.b-cur.q,cur.q]);if(v>0)set.add(v)}
+    const opts=[...set].sort(()=>Math.random()-.5);$('choices').innerHTML='';
+    opts.forEach(v=>{const b=document.createElement('button');b.className='ch';b.textContent=fmt(v);b.onclick=()=>choose(b,v);$('choices').appendChild(b)});
+  }else{$('inQ').value='';$('inR').value='';$('checkBtn').disabled=false;setTimeout(()=>$('inQ').focus(),50)}
+  $('qCard').classList.remove('pop');void $('qCard').offsetWidth;$('qCard').classList.add('pop');
+}
+
+function correct(){
+  answered=true;const pts=(tries===0&&!usedHelp)?1:0;score+=pts;streak=pts?streak+1:0;
+  const praise=pick(['فتحت المحارة ولقيت لؤلؤة! 🦪','أحسنت يا غوّاص! 🌊','زين! النوخذة راضي عنك ⛵','إجابة صحيحة! 🦪','ما شاء الله، لؤلؤة لامعة! ✨']);
+  $('fb').className='fb ok';$('fb').innerHTML=praise+(pts?'':' (المحارة كانت فاضية هالمرة لأنك احتجت مساعدة أو محاولة ثانية)')+(streak>=3&&pts?` — ${fmt(streak)} لآلئ متتالية! 🫧`:'');
+  $('hScore').textContent=fmt(score);$('hStreak').textContent=fmt(streak);
+  $('nextRow').classList.remove('hidden');$('checkBtn').disabled=true;beep(true);if(streak&&streak%5===0)confetti();
+  setTimeout(()=>$('nextBtn').focus(),50);
+}
+function wrong(msg){
+  tries++;streak=0;$('hStreak').textContent=fmt(0);beep(false);
+  $('qCard').classList.remove('shake');void $('qCard').offsetWidth;$('qCard').classList.add('shake');
+  if(tries>=2){answered=true;$('fb').className='fb bad';$('fb').innerHTML=`الإجابة الصحيحة: <b>${fmt(cur.q)}</b>${lv.rem?` والباقي <b>${fmt(cur.r)}</b>`:''}. لا بأس، الغوّاص الشاطر يتعلم من كل غوصة!`;
+    $('steps').innerHTML=longSteps(cur.a,cur.b);$('steps').className='steps show';$('nextRow').classList.remove('hidden');$('checkBtn').disabled=true;
+    document.querySelectorAll('.ch').forEach(b=>{b.disabled=true;if(parseNum(b.textContent)===cur.q)b.classList.add('right')});}
+  else{$('fb').className='fb bad';$('fb').innerHTML=msg||'حاول مرة أخرى! 💭'}
+}
+function choose(btn,v){
+  if(answered)return;
+  if(v===cur.q){btn.classList.add('right');document.querySelectorAll('.ch').forEach(b=>b.disabled=true);correct()}
+  else{btn.classList.add('wrong');btn.disabled=true;wrong(`فكّر: كم × ${fmt(cur.b)} = ${fmt(cur.a)}؟`)}
+}
+$('form').onsubmit=e=>{
+  e.preventDefault();if(answered)return;
+  const q=parseNum($('inQ').value);let r=lv.rem?parseNum($('inR').value):0;if(lv.rem&&r===null)r=0;
+  if(q===null||isNaN(q)){$('fb').className='fb bad';$('fb').textContent='اكتب ناتج القسمة أولاً ✏️';$('inQ').focus();return}
+  if(isNaN(r)){$('fb').className='fb bad';$('fb').textContent='الباقي يجب أن يكون رقماً';return}
+  if(q===cur.q&&r===cur.r)return correct();
+  let hint;
+  if(lv.rem&&r>=cur.b)hint=`انتبه! الباقي يجب أن يكون أصغر من المقسوم عليه (${fmt(cur.b)}).`;
+  else if(q===cur.q)hint='ناتج القسمة صحيح 👍 لكن راجع الباقي.';
+  else if(q*cur.b>cur.a)hint=`ناتجك كبير قليلاً: ${fmt(q)} × ${fmt(cur.b)} = ${fmt(q*cur.b)} وهو أكبر من ${fmt(cur.a)}.`;
+  else hint=`ناتجك صغير: ${fmt(q)} × ${fmt(cur.b)} = ${fmt(q*cur.b)}، وما زال يمكن أن نقسم أكثر.`;
+  wrong(hint);
+};
+function help(){if(answered)return;usedHelp=true;$('steps').innerHTML=longSteps(cur.a,cur.b);$('steps').className='steps show'}
+$('helpBtn').onclick=help;$('helpBtn2').onclick=help;
+$('nextBtn').onclick=next;
+$('quitBtn').onclick=()=>{renderHome();show('home')};
+
+function finish(){
+  $('prog').style.width='100%';const s=starsFor(score);
+  if(s>(best[lv.id]||0)){best[lv.id]=s;store.set('best',best)}
+  $('rStars').innerHTML=starStr(s);$('rScore').textContent=`اللآلئ التي صدتها: ${fmt(score)} من ${fmt(TOTAL)}`;
+  $('rEmoji').textContent=['🐚','🦪','🦪','💎'][s];
+  $('rMsg').textContent=['المحار كان مقفول هالمرة! استخدم «حبل السيب» وانزل مرة ثانية.','بداية طيبة يا غوّاص! تدرّب أكثر لتصل إلى أعمق.','شغل زين! النوخذة فخور فيك.','ما شاء الله! لقيت الدانة، أنت صيّاد لؤلؤ ماهر!'][s];
+  show('result');if(s>=2)confetti();beep(s>=2);
+}
+$('againBtn').onclick=()=>start(lv);
+$('homeBtn').onclick=()=>{renderHome();show('home')};
+$('digitsBtn').onclick=()=>{eastern=!eastern;store.set('eastern',eastern);renderHome();
+  if(!$('game').classList.contains('hidden')&&cur){$('expr').textContent=fmt(cur.a)+' ÷ '+fmt(cur.b)+(eastern?' = ؟':' = ?');$('hNum').textContent=fmt(qi)+' / '+fmt(TOTAL);$('hScore').textContent=fmt(score);$('hStreak').textContent=fmt(streak);
+    if(lv.mode==='mc')document.querySelectorAll('.ch').forEach(b=>{const v=parseNum(b.textContent);b.textContent=fmt(v)});}};
+$('soundBtn').onclick=()=>{sound=!sound;store.set('sound',sound);renderHome()};
+renderHome();
+(function(){const sea=$('sea');for(let i=0;i<18;i++){const b=document.createElement('span');b.className='b';const z=6+Math.random()*16;
+  b.style.width=b.style.height=z+'px';b.style.left=Math.random()*100+'vw';b.style.animationDuration=(7+Math.random()*9)+'s';b.style.animationDelay=(-Math.random()*14)+'s';sea.appendChild(b)}})();
+})();
+</script>
+</body>
+</html>
